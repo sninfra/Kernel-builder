@@ -6,10 +6,10 @@ task:
   name: "Kernel deploy.."
   timeout_in: 2h
   container:
-      image: panchajanya1999/archlinux:latest
+      image: nexgang/ubuntu:latest
       cpu: 4
       memory: 16G
 
   Build_script:
-      - git clone --depth=1 -b LA.UM.9.1.r1 https://github.com/projects-nexus/android_kernel_xiaomi_sweet lv && cd lv
-      - bash build.sh --azure --ld.gold
+      - git clone --depth=1 -b 4.19-rebase https://github.com/projects-nexus/android_kernel_lavender-4.19 lv && cd lv
+      - /noclone3 bash build.sh --azure
