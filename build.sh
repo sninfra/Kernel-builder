@@ -11,22 +11,16 @@ KERNEL_DIR="$(pwd)"
 ##----------------------------------------------------------##
 # Device Name and Model
 MODEL=Xiaomi
-DEVICE=Sweet
+DEVICE=Lavender
 
 # Kernel Version Code
 VERSION=X1
 
 # Kernel Defconfig
-DEFCONFIG=vendor/sweet_user_defconfig
-
-# Select LTO variant ( Full LTO by default )
-DISABLE_LTO=0
-THIN_LTO=0
+DEFCONFIG=lavender_defconfig
 
 # Files
-IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz
-DTBO=$(pwd)/out/arch/arm64/boot/dtbo.img
-DTB=$(pwd)/out/arch/arm64/boot/dts/qcom/sdmmagpie.dtb
+IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 
 # Verbose Build
 VERBOSE=0
@@ -42,7 +36,7 @@ TANGGAL=$(date +"%F%S")
 
 # Specify Final Zip Name
 ZIPNAME=Nexus
-FINAL_ZIP=${ZIPNAME}-${VERSION}-${DEVICE}-KERNEL-${TANGGAL}.zip
+FINAL_ZIP=${ZIPNAME}-${VERSION}-${DEVICE}-Kernel-${TANGGAL}.zip
 
 ##----------------------------------------------------------##
 # Specify compiler.
@@ -50,57 +44,40 @@ FINAL_ZIP=${ZIPNAME}-${VERSION}-${DEVICE}-KERNEL-${TANGGAL}.zip
 if [ "$1" = "--eva" ];
 then
 COMPILER=eva
-GCC_OPT=0
-elif [ "$1" = "--azure" ];
-then
-COMPILER=azure
 elif [ "$1" = "--proton" ];
 then
 COMPILER=proton
 elif [ "$1" = "--aosp" ];
 then
 COMPILER=aosp
-elif [ "$1" = "--neutron" ];
+elif [ "$1" = "--azure" ];
 then
-COMPILER=neutron
-fi
-
-##----------------------------------------------------------##
-# Specify Linker
-if [ "$2" = "--lld" ];
+COMPILER=azure
+elif [ "$1" = "--nexus" ];
 then
-LINKER=ld.lld
-elif [ "$2" = "--gold" ];
-then
-LINKER=ld.gold
-elif [ "$2" = "--bfd" ];
-then
-LINKER=ld.bfd
-elif [ "$2" = "--ld" ];
-then
-LINKER=ld
+COMPILER=nexus
 fi
 
 ##----------------------------------------------------------##
 # Clone ToolChain
 function cloneTC() {
 	
-	if [ $COMPILER = "azure" ];
+	if [ $COMPILER = "nexus" ];
 	then
-	post_msg " Cloning Azure Clang ToolChain "
-	git clone --depth=1  https://gitlab.com/ImSpiDy/azure-clang.git clang
-	PATH="${KERNEL_DIR}/clang/bin:$PATH"
-	
-	elif [ $COMPILER = "neutron" ];
-	then
-	post_msg " Cloning Neutron Clang ToolChain "
-	git clone --depth=1  https://github.com/Neutron-Clang/neutron-toolchain.git clang
+	post_msg " Cloning Nexus Clang 14.0.5 ToolChain "
+	git clone --depth=1  https://gitlab.com/Project-Nexus/nexus-clang.git clang
 	PATH="${KERNEL_DIR}/clang/bin:$PATH"
 	
 	elif [ $COMPILER = "proton" ];
 	then
 	post_msg " Cloning Proton Clang ToolChain "
 	git clone --depth=1  https://github.com/kdrag0n/proton-clang.git clang
+	PATH="${KERNEL_DIR}/clang/bin:$PATH"
+	
+	elif [ $COMPILER = "azure" ];
+	then
+	post_msg " Cloning Azure Clang ToolChain "
+	git clone --depth=1  https://gitlab.com/Panchajanya1999/azure-clang.git clang
 	PATH="${KERNEL_DIR}/clang/bin:$PATH"
 	
 	elif [ $COMPILER = "eva" ];
@@ -191,59 +168,29 @@ function push() {
 	-F "parse_mode=html" \
 	-F caption="$2"
 	}
-##----------------------------------------------------------------##
-# Export Configs
-function configs() {
-    if [ -d ${KERNEL_DIR}/clang ] || [ -d ${KERNEL_DIR}/aosp-clang  ]; then
-       if [ $DISABLE_LTO = "1" ]; then
-          sed -i 's/CONFIG_LTO_CLANG=y/# CONFIG_LTO_CLANG is not set/' arch/arm64/configs/${DEFCONFIG}
-          sed -i 's/CONFIG_LTO=y/# CONFIG_LTO is not set/' arch/arm64/configs/${DEFCONFIG}
-          sed -i 's/# CONFIG_LTO_NONE is not set/CONFIG_LTO_NONE=y/' arch/arm64/configs/${DEFCONFIG}
-       elif [ $THIN_LTO = "1" ]; then
-          sed -i 's/# CONFIG_THINLTO is not set/CONFIG_THINLTO=y/' arch/arm64/configs/${DEFCONFIG}
-       fi
-    elif [ -d ${KERNEL_DIR}/gcc64 ]; then
-       sed -i 's/CONFIG_LLVM_POLLY=y/# CONFIG_LLVM_POLLY is not set/' arch/arm64/configs/${DEFCONFIG}
-       sed -i 's/# CONFIG_GCC_GRAPHITE is not set/CONFIG_GCC_GRAPHITE=y/' arch/arm64/configs/${DEFCONFIG}
-       if ! [ $DISABLE_LTO = "1" ]; then
-          sed -i 's/# CONFIG_LTO_GCC is not set/CONFIG_LTO_GCC=y/' arch/arm64/configs/${DEFCONFIG}
-       fi
-    fi
-}
 ##----------------------------------------------------------##
 # Compilation
 function compile() {
 START=$(date +"%s")
 	# Push Notification
-	post_msg "<b>$KBUILD_BUILD_VERSION CI Build Triggered</b>%0A<b>Docker OS: </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Kolkata date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0A<b>Linker : </b><code>$LINKER</code>%0a<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'>$COMMIT_HEAD</a>"
+	post_msg "<b>$KBUILD_BUILD_VERSION CI Build Triggered</b>%0A<b>Docker OS: </b><code>$DISTRO</code>%0A<b>Kernel Version : </b><code>$KERVER</code>%0A<b>Date : </b><code>$(TZ=Asia/Kolkata date)</code>%0A<b>Device : </b><code>$MODEL [$DEVICE]</code>%0A<b>Pipeline Host : </b><code>$KBUILD_BUILD_HOST</code>%0A<b>Host Core Count : </b><code>$PROCS</code>%0A<b>Compiler Used : </b><code>$KBUILD_COMPILER_STRING</code>%0A<b>Branch : </b><code>$CI_BRANCH</code>%0A<b>Top Commit : </b><a href='$DRONE_COMMIT_LINK'>$COMMIT_HEAD</a>"
 	
 	# Compile
-	make O=out ARCH=arm64 ${DEFCONFIG}
+	make O=out CC=clang ARCH=arm64 ${DEFCONFIG}
 	if [ -d ${KERNEL_DIR}/clang ];
 	   then
 	       make -kj$(nproc --all) O=out \
 	       ARCH=arm64 \
 	       CC=clang \
-	       HOSTCC=clang \
-	       HOSTCXX=clang++ \
 	       CROSS_COMPILE=aarch64-linux-gnu- \
-	       CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-	       LD=${LINKER} \
-	       AR=llvm-ar \
-	       NM=llvm-nm \
-	       OBJCOPY=llvm-objcopy \
-	       OBJDUMP=llvm-objdump \
-	       STRIP=llvm-strip \
-	       READELF=llvm-readelf \
-	       OBJSIZE=llvm-size \
+	       CROSS_COMPILE_COMPAT=arm-linux-gnueabi- \
 	       V=$VERBOSE 2>&1 | tee error.log
 	elif [ -d ${KERNEL_DIR}/gcc64 ];
 	   then
 	       make -kj$(nproc --all) O=out \
 	       ARCH=arm64 \
-	       CROSS_COMPILE_ARM32=arm-eabi- \
+	       CROSS_COMPILE_COMPAT=arm-eabi- \
 	       CROSS_COMPILE=aarch64-elf- \
-	       LD=aarch64-elf-${LINKER} \
 	       AR=llvm-ar \
 	       NM=llvm-nm \
 	       OBJCOPY=llvm-objcopy \
@@ -255,20 +202,11 @@ START=$(date +"%s")
            then
                make -kj$(nproc --all) O=out \
 	       ARCH=arm64 \
-	       CC=clang \
-               HOSTCC=clang \
-	       HOSTCXX=clang++ \
+	       LLVM=1 \
+	       LLVM_IAS=1 \
 	       CLANG_TRIPLE=aarch64-linux-gnu- \
 	       CROSS_COMPILE=aarch64-linux-android- \
-	       CROSS_COMPILE_ARM32=arm-linux-androideabi- \
-	       LD=${LINKER} \
-	       AR=llvm-ar \
-	       NM=llvm-nm \
-	       OBJCOPY=llvm-objcopy \
-	       OBJDUMP=llvm-objdump \
-               STRIP=llvm-strip \
-	       READELF=llvm-readelf \
-	       OBJSIZE=llvm-size \
+	       CROSS_COMPILE_COMPAT=arm-linux-androideabi- \
 	       V=$VERBOSE 2>&1 | tee error.log
 	fi
 	
@@ -286,8 +224,6 @@ START=$(date +"%s")
 function zipping() {
 	# Copy Files To AnyKernel3 Zip
 	cp $IMAGE AnyKernel3
-	cp $DTBO AnyKernel3
-    cp $DTB AnyKernel3/dtb
 	
 	# Zipping and Push Kernel
 	cd AnyKernel3 || exit 1
