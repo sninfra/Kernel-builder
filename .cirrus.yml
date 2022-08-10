@@ -11,5 +11,5 @@ task:
       memory: 16G
 
   Build_script:
-      - git clone --depth=1 -b 4.19-rebase https://github.com/projects-nexus/android_kernel_lavender-4.19 lv && cd lv
-      - bash build.sh --azure
+      - git clone --depth=1 -b master https://github.com/Prashant-1695/kernel_xiaomi_lavender-4.19 lv && cd lv
+      - bash build.sh --proton
