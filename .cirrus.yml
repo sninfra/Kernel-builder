@@ -6,7 +6,7 @@ task:
   name: "Kernel deploy.."
   timeout_in: 2h
   container:
-      image: atomxorg/arch-linux:latest
+      image: panchajanya1999/archlinux:latest
       cpu: 4
       memory: 16G
 
