@@ -6,10 +6,10 @@ task:
   name: "Kernel deploy.."
   timeout_in: 2h
   container:
-      image: nexgang/ubuntu:latest
+      image: jebaitedneko/kernel:latest
       cpu: 4
       memory: 16G
 
   Build_script:
-      - git clone --depth=1 -b rebase https://github.com/Prashant-1695/kernel_xiaomi_lavender-4.19 lv && mv build.sh lv/build.sh && cd lv
-      - /noclone3 bash build.sh --proton
+      - git clone --depth=1 -b master https://github.com/Prashant-1695/kernel_xiaomi_lavender-4.19 lv && cd lv
+      - bash build.sh --proton
