@@ -6,14 +6,10 @@ task:
   name: "Kernel deploy.."
   timeout_in: 2h
   container:
-      image: panchajanya1999/archlinux:latest
+      image: nexgang/ubuntu:latest
       cpu: 4
       memory: 16G
 
   Build_script:
-      - echo "LC_ALL=en_US.UTF-8" | sudo tee -a /etc/environment
-      - echo "en_US.UTF-8 UTF-8" | sudo tee -a /etc/locale.gen
-      - echo "LANG=en_US.UTF-8" | sudo tee -a /etc/locale.conf
-      - sudo locale-gen en_US.UTF-8
-      - git clone --depth=1 -b master https://github.com/Prashant-1695/kernel_xiaomi_lavender-4.19 lv && cd lv
-      - bash build.sh --proton
+      - git clone --depth=1 -b eas https://github.com/Prashant-1695/kernel_xiaomi_lavender-4.19 lv && cd lv
+      - bash build.sh --nexus 
