@@ -6,7 +6,7 @@ task:
   name: "Kernel deploy.."
   timeout_in: 120m
   container:
-      image: nexgang/ubuntu:latest
+      image: z4nyx/docker:latest
       cpu: 4
       memory: 16G
       stateful: true
