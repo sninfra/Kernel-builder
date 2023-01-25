@@ -13,5 +13,5 @@ task:
       greedy: true
 
   Build_script:
-      - git clone --depth=1 -b tine https://github.com/Prashant-1695/kernel_xiaomi_lavender-4.19 lv && cd lv
+      - git clone --depth=1 -b CLO-2 https://github.com/Prashant-1695/kernel_xiaomi_lavender-4.19 lv && cd lv
       - /noclone3 bash build.sh --neutron
