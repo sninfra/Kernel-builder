@@ -1,5 +1,6 @@
 env:
-    token: "ENCRYPTED[91aa86249a2b8217c4416fd0688d5f96bd0f1c00043f546a4c588cc41f1e1e9233082dbd36ac2f5624e3843ff1136e63]"
+    token: "ENCRYPTED[03d2306567f90315477d1cdcdfae1560b1142aec5513470cae32d74d44227d7810c87443d30f38b0bf52b602f03d3a05]"
+    my_token: "ENCRYPTED[31d304746413c1c4375518b3b9892b87193c4e299d2f233977c32aef14ab352fafd383d77ea4c426c09c30ecb631def0]"
     chat_id: "ENCRYPTED[271123886e84714e0f103ef02e04c0e8f59d20e429fb1c0f118b20bf88b4a98f966b095e487c0ba21ceb314215d0b060]"
     
 task:
@@ -13,5 +14,5 @@ task:
       greedy: true
 
   Build_script:
-      - git clone --depth=1 -b CLO-2 https://github.com/Prashant-1695/kernel_xiaomi_lavender-4.19 lv && cd lv
+      - git clone --depth=1 -b CLO-2 https://github.com/Prashant-1695:$my_token@/kernel_xiaomi_lavender-4.19 lv && cd lv
       - /noclone3 bash build.sh
