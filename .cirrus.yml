@@ -14,5 +14,5 @@ task:
       greedy: true
 
   Build_script:
-      - git clone --depth=1 -b 13-4.19 https://github.com/lavender-4-19/android_kernel_xiaomi_lavender lv && cd lv
+      - git clone --depth=1 -b 13-4.19-2 https://github.com/lavender-4-19/android_kernel_xiaomi_lavender lv && cd lv
       - /noclone3 bash build.sh
