@@ -9,5 +9,8 @@ task:
       greedy: true
 
   Build_script:
-      - git clone --depth=1 -b oss-dyn https://github.com/Amritorock/kernel_realme_r5x r5x && cd r5x
+      - git clone --depth=1 -b wip https://github.com/Amritorock/kernel_realme_r5x r5x && cd r5x
+      - git config --global user.name "AmritoRock"
+      - git config --global user.email "amritokarmokar5i@gmail.com"
+      - git fetch https://github.com/Amritorock/kernel_realme_r5x && git cherry-pick b4ee3d8d715e85225f68952a0684e4293eff57c1
       - bash build.sh 
