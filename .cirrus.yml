@@ -1,13 +1,23 @@
+env:
+  token: "ENCRYPTED[!12070119ffc60c5bce0262201964e052b53b6d5b11759d25418aba32b79e3e07054c6ce0f1b95e700b96d0f54d50dda1!]"
+
+  chat_id: "ENCRYPTED[!9c80effa4f8d8b6c79debd3a91290260a28cc203cbacb2431fbd9ae2929153996b7ab7a42e6ff1a635aefdc04404a2e2!]"
+
 task:
   name: "Kernel deploy.."
   timeout_in: 120m
   container:
-      image: nexgang/ubuntu:latest
-      cpu: 8
-      memory: 16G
-      stateful: true
-      greedy: true
+    image: nexgang/ubuntu:latest
+    cpu: 8
+    memory: 16G
+    stateful: true
+    greedy: true
 
   Build_script:
-      - git clone --depth=1 -b oss-dyn https://github.com/Amritorock/kernel_realme_r5x r5x && cd r5x
-      - bash build.sh 
+
+    - git clone --depth=1 -b oss-dyn https://github.com/Amritorock/kernel_realme_r5x r5x && cd r5x
+    - bash build.sh
+
+
+
+
