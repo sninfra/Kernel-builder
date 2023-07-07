@@ -1,8 +1,3 @@
-env:
-    token: "ENCRYPTED[91aa86249a2b8217c4416fd0688d5f96bd0f1c00043f546a4c588cc41f1e1e9233082dbd36ac2f5624e3843ff1136e63]"
-    my_og_token: "ENCRYPTED[31d304746413c1c4375518b3b9892b87193c4e299d2f233977c32aef14ab352fafd383d77ea4c426c09c30ecb631def0]"
-    chat_id: "ENCRYPTED[03d2306567f90315477d1cdcdfae1560b1142aec5513470cae32d74d44227d7810c87443d30f38b0bf52b602f03d3a05]"
-    
 task:
   name: "Kernel deploy.."
   timeout_in: 120m
@@ -14,5 +9,5 @@ task:
       greedy: true
 
   Build_script:
-      - git clone --depth=1 -b 13-4.19-2 https://github.com/lavender-4-19/android_kernel_xiaomi_lavender lv && cd lv
-      - /noclone3 bash build.sh
+      - git clone --depth=1 -b oss-dyn https://github.com/Amritorock/kernel_realme_r5x r5x && cd r5x
+      - bash build.sh
