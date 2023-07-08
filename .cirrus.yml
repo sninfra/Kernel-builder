@@ -15,8 +15,7 @@ task:
 
   Build_script:
 
-    - git clone --depth=1 -b oss-dyn https://github.com/Amritorock/kernel_realme_r5x r5x && cd r5x
-    - curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -
+    - git clone --depth=1 -b OG https://github.com/Amritorock/kernel_realme_r5x r5x && cd r5x
     - bash build.sh 
 
 
