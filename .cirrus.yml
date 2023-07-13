@@ -16,7 +16,7 @@ task:
   Build_script:
 
     - git clone --depth=1 -b Backup https://github.com/Amritorock/kernel_realme_r5x r5x && cd r5x
-    - bash build.sh 
+    - bash build.sh
 
 
 
