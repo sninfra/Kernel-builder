@@ -9,7 +9,7 @@ task:
   container:
     image: nexgang/ubuntu:latest
     cpu: 16
-    memory: 32G
+    memory: 16G
     stateful: true
     greedy: true
 
