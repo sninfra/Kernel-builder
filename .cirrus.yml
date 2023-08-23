@@ -3,32 +3,20 @@ env:
 
   chat_id: "ENCRYPTED[!9c80effa4f8d8b6c79debd3a91290260a28cc203cbacb2431fbd9ae2929153996b7ab7a42e6ff1a635aefdc04404a2e2!]"
 
+
 task:
   name: "Kernel deploy.."
   timeout_in: 120m
   container:
     image: nexgang/ubuntu:latest
     cpu: 8
-    memory: 32G
+    memory: 16G
     stateful: true
     greedy: true
-
   Build_script:
-   
-    - mkdir rom
-    - cd rom
-    - repo init -u https://github.com/AOSPA/manifest -b topaz
-    - repo sync --no-clone-bundle --current-branch --no-tags -j4
-    - git clone https://github.com/Amritorock/android_device_realme_r5x -b topaz device/realme/r5x
-    - git clone https://github.com/Amritorock/vendor_realme_r5x -b topaz vendor/realme/r5x
-    - git clone https://github.com/ironHeart6/kernel_realme_trinket -b topaz kernel/realme/r5x
-    - rm -rf build/make && git clone https://github.com/Amritorock/android_build -b topaz build/make
-    - rm -rf vendor/aospa && git clone https://github.com/Amritorock/android_vendor_aospa -b topaz vendor/aospa
-    - source build/envsetup.sh
-    - lunch aospa_r5x-userdebug
-    - export TARGET_BOARD_PLATFORM=trinket
-    - export BOARD_USES_QCOM_HARDWARE=true
-    - ./rom-build.sh r5x -t userdebug
+
+    - git clone --depth=1 -b OSS https://github.com/Amritorock/kernel_realme_r5x r5x && cd r5x
+    - bash build.sh
 
 
 
